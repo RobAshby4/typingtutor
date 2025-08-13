@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Numerics;
+﻿using System.Numerics;
 using Raylib_cs;
 
 namespace HelloWorld;
@@ -22,10 +21,6 @@ class Program
         // init window
         Raylib.InitWindow(windowWidth, windowHeight, "Typing Tutor");
 
-        // init fonts and font options.
-        Font typingFont = Raylib.LoadFont("IBMPlexSerif-Regular.ttf");
-        int fontSize = 32;
-        int spacing = 0;
 
         while (!Raylib.WindowShouldClose())
         {
@@ -37,8 +32,8 @@ class Program
             // if you havent started, show instructions
             if (!started)
             {
-                showInstructions(typingFont, fontSize, spacing);
-                unstartedLoop(typingFont, fontSize, spacing);
+                showInstructions(Resources.font, Resources.defFontSize, Resources.defSpacing);
+                unstartedLoop();
             }
             Raylib.EndDrawing();
         }
@@ -46,7 +41,7 @@ class Program
         Raylib.CloseWindow();
     }
 
-    private static void unstartedLoop(Font font, int fontSize, int spacing)
+    private static void unstartedLoop()
     {
         int keycode = Raylib.GetKeyPressed();
         while (keycode != 0)
@@ -75,8 +70,8 @@ class Program
             keycode = Raylib.GetKeyPressed();
         }
         string practiceString = new string(practiceChars.ToArray());
-        Vector2 offset = CalculateTextCenterOffset(practiceString, font, fontSize, spacing);
-        Raylib.DrawTextEx(font, practiceString, offset, fontSize, spacing, Color.Black);
+        Vector2 offset = CalculateTextCenterOffset(practiceString, Resources.font, Resources.defFontSize, Resources.defSpacing);
+        Raylib.DrawTextEx(Resources.font, practiceString, offset, Resources.defFontSize, Resources.defSpacing, Color.Black);
     }
 
     private static void showInstructions(Font font, int fontSize, int spacing)
@@ -131,7 +126,7 @@ internal class WordGenerator
     public WordGenerator(List<char> letters)
     {
         this.letters = letters;
-        this.wordList = Words.wordList;
+        this.wordList = QualifiedWords.wordList;
         this.trainingSet = new List<string>();
         WordGenerator.idx = 0;
         updateGenerator();
