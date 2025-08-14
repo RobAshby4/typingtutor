@@ -60,10 +60,10 @@ class Program
                 if (Raylib.IsKeyPressed(KeyboardKey.Enter) && practiceChars.Count > 0)
                 {
                     started = true;
-                    generator.updateLetters(practiceChars);
+                    generator.UpdateLetters(practiceChars);
                     for (int i = 0; i < 10; i++)
                     {
-                        Console.WriteLine(generator.yieldWord());
+                        Console.WriteLine(generator.YieldWord());
                     }
                 }
             }
@@ -129,16 +129,16 @@ internal class WordGenerator
         this.wordList = QualifiedWords.wordList;
         this.trainingSet = new List<string>();
         WordGenerator.idx = 0;
-        updateGenerator();
+        UpdateGenerator();
     }
 
-    public void updateLetters(List<char> letters)
+    public void UpdateLetters(List<char> letters)
     {
         trainingSet.Clear();
         this.letters = letters;
-        updateGenerator();
+        UpdateGenerator();
     }
-    void updateGenerator()
+    void UpdateGenerator()
     {
         if (letters.Count == 0)
         {
@@ -171,7 +171,7 @@ internal class WordGenerator
         }
     }
 
-    public string? yieldWord()
+    public string? YieldWord()
     {
         // if there is a word to yield, yield it. otherwise return null
         if (trainingSet.Count > 0)
