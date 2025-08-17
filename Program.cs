@@ -15,6 +15,8 @@ class Program
     };
     private static bool started = false;
     private static WordGenerator generator = new WordGenerator(practiceChars);
+    private static List<WordUnit> currentWords = new List<WordUnit>();
+
     [STAThread]
     public static void Main()
     {
@@ -33,7 +35,11 @@ class Program
             if (!started)
             {
                 showInstructions(Resources.font, Resources.defFontSize, Resources.defSpacing);
-                unstartedLoop();
+                UnstartedLoop();
+            }
+            else
+            {
+                StartedLoop();
             }
             Raylib.EndDrawing();
         }
@@ -41,7 +47,23 @@ class Program
         Raylib.CloseWindow();
     }
 
-    private static void unstartedLoop()
+    private static void StartedLoop()
+    {
+        int drawHeight = Resources.windowHeight / 2;
+        int keycode = Raylib.GetKeyPressed();
+        while (keycode != 0)
+        {
+            char? c = getCharacter(keycode);
+            if (!(c is null))
+            {
+                
+            }
+
+        }
+
+    }
+
+    private static void UnstartedLoop()
     {
         int keycode = Raylib.GetKeyPressed();
         while (keycode != 0)
@@ -63,7 +85,13 @@ class Program
                     generator.UpdateLetters(practiceChars);
                     for (int i = 0; i < 10; i++)
                     {
-                        Console.WriteLine(generator.YieldWord());
+                        string? yieldedWord = generator.YieldWord();
+                        if (yieldedWord is null)
+                        {
+                            throw new NullReferenceException();
+                        }
+                        WordUnit word = new WordUnit(yieldedWord.ToList());
+                        Resources.wordList.Add(word);
                     }
                 }
             }
@@ -161,13 +189,24 @@ internal class WordGenerator
                 }
             }
         }
+        // We have to change to an array to use rand.Shuffle()
         Random rand = new Random();
         string[] trainingArray = trainingSet.ToArray();
         rand.Shuffle<string>(trainingArray);
         trainingSet.Clear();
+        // Add back to trainingSet. not efficient. :(
         foreach (string s in trainingArray)
         {
             trainingSet.Add(s);
+        }
+    }
+
+    void UpdateGenerator(string[] wordArray)
+    {
+        // for if you need to specifically set the list to some string
+        for (int i = 0; i < wordArray.Length; i++)
+        {
+            trainingSet.Add(wordArray[i]);
         }
     }
 

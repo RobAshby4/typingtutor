@@ -8,4 +8,5 @@ public static class Resources
     // the non ex font size is set at 32 px
     public static int defFontSize = 32;
     public static int defSpacing = 0;
+    public static List<WordUnit> allWords;
 }
